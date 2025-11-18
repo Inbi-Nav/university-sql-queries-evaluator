@@ -1,4 +1,8 @@
 -- 1. Retorna un llistat amb el primer cognom, segon cognom i el nom de tots els/les alumnes. El llistat haurà d'estar ordenat alfabèticament de menor a major pel primer cognom, segon cognom i nom.
+SELECT nombre, apellido1 as primer_cognom, apellido2 as segon_cognom
+FROM persona
+WHERE tipo = 'alumno'
+ORDER BY apellido1 ASC, apellido2 ASC, nombre ASC ;
 
 
 -- 2. Esbrina el nom i els dos cognoms dels alumnes que no han donat d'alta el seu número de telèfon en la base de dades. (nombre, apellido1, apellido2)
