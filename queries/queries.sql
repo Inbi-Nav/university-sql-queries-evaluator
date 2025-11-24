@@ -83,19 +83,49 @@ WHERE pe.tipo = 'profesor'
 ORDER BY departamento, pe.apellido1, pe.apellido2, pe.nombre;
 
 -- 11. Retorna un llistat amb els professors/es que no estan associats a un departament. (apellido1, apellido2, nombre)
-
+SELECT  d.nombre as nombre_departamento, pe.apellido1 as primer_cognom, pe.apellido2 as segon_cognom, pe.nombre as nombre_profesor
+FROM persona pe 
+LEFT JOIN profesor p
+ON pe.id = p.id_profesor
+LEFT JOIN departamento d
+ON d.id = p.id_departamento
+WHERE d.nombre IS NULL;
 
 -- 12. Retorna un llistat amb els departaments que no tenen professors/es associats. (nombre)
-
+SELECT d.nombre
+FROM departamento d
+LEFT JOIN profesor p
+ON p.id_departamento = d.id
+WHERE p.id_departamento IS NULL;
 
 -- 13. Retorna un llistat amb els professors/es que no imparteixen cap assignatura. (apellido1, apellido2, nombre)
-
+SELECT pe.apellido1, pe.apellido2, pe.nombre
+FROM persona pe
+LEFT JOIN profesor pr
+ON pr.id_profesor = pe.id
+LEFT JOIN asignatura a
+ON a.id_profesor = pr.id_profesor
+Where pe.tipo = 'profesor'
+AND pr.id_profesor IS NOT NULL
+ AND a.id_profesor IS NULL;
 
 -- 14. Retorna un llistat amb les assignatures que no tenen un professor/a assignat. (id, nombre)
-
+SELECT a.id, a.nombre
+FROM asignatura a
+LEFT JOIN profesor p
+ON a.id_profesor = p.id_profesor
+WHERE p.id_profesor IS NULL;
 
 -- 15. Retorna un llistat amb tots els departaments que no han impartit assignatures en cap curs escolar. (nombre)
-
+SELECT d.nombre
+FROM departamento d
+LEFT JOIN  profesor p
+ON p.id_departamento = d.id
+LEFT JOIN asignatura a
+ON a.id_profesor = p.id_profesor
+LEFT JOIN alumno_se_matricula_asignatura al
+ON al.id_asignatura = a.id
+WHERE al.id_asignatura IS NULL;
 
 -- 16. Retorna el nombre total d'alumnes que hi ha. (total)
 
