@@ -121,19 +121,43 @@ LEFT JOIN asignatura a ON p.id_profesor = a.id_profesor
 WHERE a.id IS NULL;
 
 -- 16. Retorna el nombre total d'alumnes que hi ha. (total)
-
+SELECT COUNT(nombre)
+FROM persona
+WHERE tipo = 'alumno';
 
 -- 17. Calcula quants alumnes van néixer en 1999. (total)
-
+SELECT COUNT(nombre)
+FROM persona
+WHERE tipo = 'alumno' AND YEAR(fecha_nacimiento)  = '1999';
 
 -- 18. Calcula quants professors/es hi ha en cada departament. El resultat només ha de mostrar dues columnes, una amb el nom del departament i una altra amb el nombre de professors/es que hi ha en aquest departament. El resultat només ha d'incloure els departaments que tenen professors/es associats i haurà d'estar ordenat de major a menor pel nombre de professors/es. (departamento, total)
-
+SELECT d.nombre as nombre_departament, COUNT(pe.nombre) as total_profesores
+FROM persona pe 
+JOIN profesor pr
+ON pr.id_profesor = pe.id
+JOIN departamento d
+ON pr.id_departamento = d.id 
+WHERE pe.tipo = 'profesor' 
+GROUP BY d.id, d.nombre
+order by total_profesores DESC;
 
 -- 19. Retorna un llistat amb tots els departaments i el nombre de professors/es que hi ha en cadascun d'ells. Tingui en compte que poden existir departaments que no tenen professors/es associats. Aquests departaments també han d'aparèixer en el llistat. (departamento, total)
-
+SELECT d.nombre as nombre_departament, COUNT(pe.nombre) as total_profesores
+FROM departamento d 
+LEFT JOIN profesor pr
+ON pr.id_departamento = d.id
+LEFT JOIN persona pe 
+ON pr.id_profesor = pe.id
+GROUP BY d.id, d.nombre
+ORDER BY total_profesores DESC;
 
 -- 20. Retorna un llistat amb el nom de tots els graus existents en la base de dades i el nombre d'assignatures que té cadascun. Tingues en compte que poden existir graus que no tenen assignatures associades. Aquests graus també han d'aparèixer en el llistat. El resultat haurà d'estar ordenat de major a menor pel nombre d'assignatures. (grau, total)
-
+SELECT DISTINCT g.nombre, COUNT(asig.nombre) as total_asignaturas
+FROM grado g 
+LEFT JOIN asignatura asig
+ON asig.id_grado = g.id
+GROUP BY g.id, g.nombre
+ORDER BY total_asignaturas DESC;
 
 -- 21. Retorna un llistat amb el nom de tots els graus existents en la base de dades i el nombre d'assignatures que té cadascun, dels graus que tinguin més de 40 assignatures associades. (grau, total)
 
