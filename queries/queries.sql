@@ -4,35 +4,75 @@ FROM persona
 WHERE tipo = 'alumno'
 ORDER BY apellido1 ASC, apellido2 ASC, nombre ASC ;
 
-
 -- 2. Esbrina el nom i els dos cognoms dels alumnes que no han donat d'alta el seu número de telèfon en la base de dades. (nombre, apellido1, apellido2)
-
+SELECT nombre, apellido1 as primer_cognom, apellido2 as segon_cognom
+FROM persona 
+where tipo = 'alumno' AND telefono IS NULL;
 
 -- 3. Retorna el llistat dels alumnes que van néixer en 1999. (id, nombre, apellido1, apellido2, fecha_nacimiento)
-
-
+SELECT id, nombre, apellido1 as primer_cognom, apellido2 as segon_cognom, fecha_nacimiento
+FROM persona 
+WHERE tipo = 'alumno' AND YEAR(fecha_nacimiento) = '1999';
 
 -- 4. Retorna el llistat de professors/es que no han donat d'alta el seu número de telèfon en la base de dades i a més el seu NIF acaba en K. (nombre, apellido1, apellido2, nif)
-
+SELECT id, nombre, apellido1 as primer_apellido, apellido2 as segundo_apellido, nif
+FROM persona
+WHERE tipo = 'profesor' AND  telefono IS NULL AND nif REGEXP 'K$';
 
 -- 5. Retorna el llistat de les assignatures que s'imparteixen en el primer quadrimestre, en el tercer curs del grau que té l'identificador 7. (id, nombre, cuatrimestre, curso, id_grado)
-
+SELECT a.id, a.nombre, a.cuatrimestre, a.id_grado 
+FROM asignatura a
+WHERE a.cuatrimestre = 1 AND  a.curso = 3 AND a.id_grado= 7;
 
 -- 6. Retorna un llistat dels professors/es juntament amb el nom del departament al qual estan vinculats. El llistat ha de retornar quatre columnes, primer cognom, segon cognom, nom i nom del departament. El resultat estarà ordenat alfabèticament de menor a major pels cognoms i el nom. (apellido1, apellido2, nombre, departamento)
-
+SELECT pe.apellido1 as primer_cognom, pe.apellido2 as segon_cognom, pe.nombre as nombre_profesor, d.nombre as nombre_departamento
+FROM profesor p
+JOIN persona pe
+ON p.id_profesor = pe.id
+JOIN departamento d
+ON p.id_departamento = d.id
+ORDER BY pe.apellido1, pe.apellido2, pe.nombre;
 
 -- 7. Retorna un llistat amb el nom de les assignatures, any d'inici i any de fi del curs escolar de l'alumne/a amb NIF 26902806M. (nombre, anyo_inicio, anyo_fin)
-
+SELECT  asg.nombre, cs.anyo_inicio, cs.anyo_fin
+from alumno_se_matricula_asignatura  a
+JOIN curso_escolar cs
+ON a.id_curso_escolar = cs.id
+JOIN asignatura asg
+ON a.id_asignatura = asg.id
+JOIN persona p
+ON a.id_alumno = p.id 
+WHERE p.nif = '26902806M';
 
 -- 8. Retorna un llistat amb el nom de tots els departaments que tenen professors/es que imparteixen alguna assignatura en el Grau en Enginyeria Informàtica (Pla 2015). (nombre)
-
+SELECT DISTINCT d.nombre
+FROM departamento d 
+JOIN profesor p
+ON d.id = p.id_departamento
+JOIN asignatura a
+ON a.id_profesor = p.id_profesor
+JOIN grado g
+ON g.id = a.id_grado 
+WHERE g.nombre= 'Grado en Ingeniería Informática (Plan 2015)';
 
 -- 9. Retorna un llistat amb tots els alumnes que s'han matriculat en alguna assignatura durant el curs escolar 2018/2019. (nombre, apellido1, apellido2)
+SELECT DISTINCT p.nombre, p.apellido1 as primer_cognom, p.apellido2 as segon_cognom 
+FROM persona p
+JOIN alumno_se_matricula_asignatura al
+ON p.id = al.id_alumno
+JOIN curso_escolar ce
+ON al.id_curso_escolar = ce.id
+WHERE ce.anyo_inicio = 2018 AND ce.anyo_fin = 2019;
 
-
--- Resol les 6 següents consultes utilitzant les clàusules LEFT JOIN i RIGHT JOIN.
 -- 10. Retorna un llistat amb els noms de tots els professors/es i els departaments que tenen vinculats. El llistat també ha de mostrar aquells professors/es que no tenen cap departament associat. El llistat ha de retornar quatre columnes, nom del departament, primer cognom, segon cognom i nom del professor/a. El resultat estarà ordenat alfabèticament de menor a major pel nom del departament, cognoms i el nom. (departamento, apellido1, apellido2, nombre)
-
+SELECT  d.nombre as nombre_departamento, pe.apellido1 as primer_cognom, pe.apellido2 as segon_cognom, pe.nombre as nombre_profesor
+FROM persona pe 
+LEFT JOIN profesor p
+ON pe.id = p.id_profesor
+LEFT JOIN departamento d
+ON d.id = p.id_departamento
+WHERE tipo = 'profesor'
+ORDER BY pe.apellido1, pe.apellido2, pe.nombre;
 
 -- 11. Retorna un llistat amb els professors/es que no estan associats a un departament. (apellido1, apellido2, nombre)
 
