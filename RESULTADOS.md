@@ -2,7 +2,7 @@
 
 
 ## 📈 Resumen
-✅ 2 correctas de 11 queries
+✅ 4 correctas de 11 queries
 
 ## ❌ Query 1: Incorrecto
 ```diff
@@ -37,7 +37,7 @@
 +Ismael | Strosin | Turcotte
 ```
 
-⏱ Tiempo: 0.46 ms
+⏱ Tiempo: 0.40 ms
 🔍 No se usó ningún índice en esta consulta.
 
 ---
@@ -53,7 +53,7 @@
  Ismael | Strosin | Turcotte
 ```
 
-⏱ Tiempo: 0.35 ms
+⏱ Tiempo: 0.30 ms
 🔍 No se usó ningún índice en esta consulta.
 
 ---
@@ -69,7 +69,7 @@
  22.00 | Antonio | Domínguez | Guerrero | 1999-02-11
 ```
 
-⏱ Tiempo: 0.31 ms
+⏱ Tiempo: 0.33 ms
 🔍 No se usó ningún índice en esta consulta.
 
 ---
@@ -87,65 +87,36 @@
 +17.00 | Guillermo | Ruecker | Upton | 85869555K
 ```
 
-⏱ Tiempo: 0.36 ms
+⏱ Tiempo: 0.33 ms
 🔍 No se usó ningún índice en esta consulta.
 
 ---
 
-## ❌ Query 5: Incorrecto
-```diff
---- 
-+++ 
-@@ -1,7 +1,7 @@
--id | nombre | cuatrimestre | curso | id_grado
--72.00 | Bases moleculares del desarrollo vegetal | 1.00 | 3.00 | 7.00
--73.00 | Fisiología animal | 1.00 | 3.00 | 7.00
--74.00 | Metabolismo y biosíntesis de biomoléculas | 1.00 | 3.00 | 7.00
--75.00 | Operaciones de separación | 1.00 | 3.00 | 7.00
--76.00 | Patología molecular de plantas | 1.00 | 3.00 | 7.00
--77.00 | Técnicas instrumentales básicas | 1.00 | 3.00 | 7.00
-+id | nombre | cuatrimestre | id_grado
-+72.00 | Bases moleculares del desarrollo vegetal | 1.00 | 7.00
-+73.00 | Fisiología animal | 1.00 | 7.00
-+74.00 | Metabolismo y biosíntesis de biomoléculas | 1.00 | 7.00
-+75.00 | Operaciones de separación | 1.00 | 7.00
-+76.00 | Patología molecular de plantas | 1.00 | 7.00
-+77.00 | Técnicas instrumentales básicas | 1.00 | 7.00
-```
+## ✅ Query 5: Correcto
 
-⏱ Tiempo: 0.36 ms
+⏱ Tiempo: 0.35 ms
 ✅ Se usó índice(s) en la consulta: id_grado
 
 ---
 
-## ❌ Query 6: Incorrecto
-```diff
---- 
-+++ 
-@@ -1,4 +1,4 @@
--apellido1 | apellido2 | nombre | departamento
-+primer_cognom | segon_cognom | nombre_profesor | nombre_departamento
- Fahey | Considine | Antonio | Economía y Empresa
- Hamill | Kozey | Manolo | Informática
- Kohler | Schoen | Alejandro | Matemáticas
-```
+## ✅ Query 6: Correcto
 
-⏱ Tiempo: 0.42 ms
+⏱ Tiempo: 0.37 ms
 ✅ Se usó índice(s) en la consulta: PRIMARY,id_departamento, PRIMARY
 
 ---
 
 ## ✅ Query 7: Correcto
 
-⏱ Tiempo: 0.55 ms
-✅ Se usó índice(s) en la consulta: PRIMARY,id_asignatura,id_curso_escolar, PRIMARY,nif, PRIMARY
+⏱ Tiempo: 0.53 ms
+✅ Se usó índice(s) en la consulta: PRIMARY,nif, PRIMARY, PRIMARY,id_asignatura,id_curso_escolar
 
 ---
 
 ## ✅ Query 8: Correcto
 
-⏱ Tiempo: 0.41 ms
-✅ Se usó índice(s) en la consulta: PRIMARY,id_departamento, PRIMARY, id_profesor,id_grado
+⏱ Tiempo: 0.37 ms
+✅ Se usó índice(s) en la consulta: PRIMARY,id_departamento, id_profesor,id_grado, PRIMARY
 
 ---
 
@@ -161,8 +132,8 @@
  Sonia | Gea | Ruiz
 ```
 
-⏱ Tiempo: 0.37 ms
-✅ Se usó índice(s) en la consulta: PRIMARY,id_curso_escolar, PRIMARY
+⏱ Tiempo: 0.36 ms
+✅ Se usó índice(s) en la consulta: PRIMARY, PRIMARY,id_curso_escolar
 
 ---
 
@@ -170,31 +141,15 @@
 ```diff
 --- 
 +++ 
-@@ -1,13 +1,13 @@
+@@ -1,4 +1,4 @@
 -departamento | apellido1 | apellido2 | nombre
 +nombre_departamento | primer_cognom | segon_cognom | nombre_profesor
-+Economía y Empresa | Fahey | Considine | Antonio
-+Informática | Hamill | Kozey | Manolo
-+Matemáticas | Kohler | Schoen | Alejandro
-+Economía y Empresa | Lemke | Rutherford | Cristina
  Agronomía | Monahan | Murray | Micaela
--Economía y Empresa | Fahey | Considine | Antonio
--Economía y Empresa | Lemke | Rutherford | Cristina
-+Informática | Ramirez | Gea | Zoe
- Educación | Ruecker | Upton | Guillermo
--Educación | Spencer | Lakin | Esther
--Educación | Streich | Hirthe | Carmen
--Informática | Hamill | Kozey | Manolo
--Informática | Ramirez | Gea | Zoe
--Matemáticas | Kohler | Schoen | Alejandro
- Matemáticas | Schmidt | Fisher | David
- Química y Física | Schowalter | Muller | Francesca
-+Educación | Spencer | Lakin | Esther
- Química y Física | Stiedemann | Morissette | Alfredo
-+Educación | Streich | Hirthe | Carmen
+ Economía y Empresa | Fahey | Considine | Antonio
+ Economía y Empresa | Lemke | Rutherford | Cristina
 ```
 
-⏱ Tiempo: 0.40 ms
+⏱ Tiempo: 0.39 ms
 ✅ Se usó índice(s) en la consulta: PRIMARY
 
 ---
